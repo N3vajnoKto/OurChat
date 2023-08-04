@@ -9,6 +9,8 @@ import sys
 app = QApplication(sys.argv)
 QFontDatabase.addApplicationFont(":/Open_Sans/OpenSans-Regular.ttf")
 QFontDatabase.addApplicationFont(":/Open_Sans/OpenSans-Bold.ttf")
+QFontDatabase.addApplicationFont(":/Open_Sans/OpenSans-Light.ttf")
+QFontDatabase.addApplicationFont(":/Open_Sans/OpenSans-Medium.ttf")
 
 chat = OurChat()
 chat.show()

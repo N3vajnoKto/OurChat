@@ -1,8 +1,10 @@
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import QWidget, QVBoxLayout
+from PyQt6.QtCore import QObject, QMargins
 from PyQt6.QtGui import QPalette, QColor, QResizeEvent
 
 from .InfoBoard import InfoBoard
-
+from .PageList import PageList
+from .Chat import Chat
 
 class PersonalChat(QWidget):
     def __init__(self, name: str, parent=None):
@@ -11,7 +13,32 @@ class PersonalChat(QWidget):
 
         self.name = name
         self.infoBoard = InfoBoard(self.name, self)
-        self.__infoBoardHeight = 60
+        self.workSpace = PageList(self)
+
+        w = QWidget(self)
+        w2 = QWidget(self)
+
+        w.setAutoFillBackground(True)
+        pal = w.palette()
+        pal.setColor(w.backgroundRole(), QColor(0, 0, 255))
+        w.setPalette(pal)
+
+        w2.setAutoFillBackground(True)
+        pal = w2.palette()
+        pal.setColor(w.backgroundRole(), QColor(255, 0, 0))
+        w2.setPalette(pal)
+
+        self.workSpace.addWidget(w2, "secondWidget")
+        self.workSpace.addWidget(w, "firstWidget")
+
+        lay = QVBoxLayout(self)
+        lay.setContentsMargins(QMargins(0, 0, 0, 0))
+        lay.setSpacing(0)
+        lay.addWidget(self.infoBoard)
+        lay.addWidget(self.workSpace)
+
+        self.__infoBoardHeight = 54
+        self.infoBoard.setFixedHeight(self.__infoBoardHeight)
 
         self.setAutoFillBackground(True)
         pal = self.palette()
@@ -23,7 +50,7 @@ class PersonalChat(QWidget):
 
     def setInfoBoardHeight(self, h: int) -> None:
         self.__infoBoardHeight = h
-        self.infoBoard.resize(self.infoBoard.width(), self.infoBoardHeight())
+        self.infoBoard.setFixedHeight(self.infoBoardHeight())
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         self.infoBoard.move(0, 0)
