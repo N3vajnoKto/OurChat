@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QPlainTextEdit
 from PyQt6.QtCore import QObject
-from PyQt6.QtGui import QColorConstants
+from PyQt6.QtGui import QColorConstants, QResizeEvent
 
 
 class MessageBox(QWidget):
