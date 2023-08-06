@@ -61,7 +61,7 @@ class PageListButton(QWidget):
 
         self.bckDef = QColorConstants.Transparent
         self.bckHover = QColorConstants.Red
-        self.bckActive = QColorConstants.Green
+        self.bckActive = QColorConstants.Blue
 
         self.curColor = self.bckDef
 

@@ -4,7 +4,8 @@ from PyQt6.QtGui import QPalette, QColor, QResizeEvent
 
 from .InfoBoard import InfoBoard
 from .PageList import PageList
-from .Chat import Chat
+from .Chat.Chat import Chat
+
 
 class PersonalChat(QWidget):
     def __init__(self, name: str, parent=None):
@@ -14,6 +15,7 @@ class PersonalChat(QWidget):
         self.name = name
         self.infoBoard = InfoBoard(self.name, self)
         self.workSpace = PageList(self)
+        self.chat = Chat(self)
 
         w = QWidget(self)
         w2 = QWidget(self)
@@ -23,13 +25,8 @@ class PersonalChat(QWidget):
         pal.setColor(w.backgroundRole(), QColor(0, 0, 255))
         w.setPalette(pal)
 
-        w2.setAutoFillBackground(True)
-        pal = w2.palette()
-        pal.setColor(w.backgroundRole(), QColor(255, 0, 0))
-        w2.setPalette(pal)
-
-        self.workSpace.addWidget(w2, "secondWidget")
         self.workSpace.addWidget(w, "firstWidget")
+        self.workSpace.addWidget(self.chat, "Chat")
 
         lay = QVBoxLayout(self)
         lay.setContentsMargins(QMargins(0, 0, 0, 0))
