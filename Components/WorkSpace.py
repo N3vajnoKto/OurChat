@@ -9,7 +9,7 @@ class WorkSpace(QWidget):
         QWidget.__init__(self, parent)
 
         self.resize(200, 300)
-        self.setMinimumSize(300, 300)
+        self.setMinimumSize(340, 300)
 
         self.centralWidget:QWidget = PersonalChat("Девушка Рядом С Кириллом", self)
 

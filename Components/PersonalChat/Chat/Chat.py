@@ -3,13 +3,13 @@ from PyQt6.QtCore import QObject
 from PyQt6.QtGui import QColorConstants
 
 from .EditorBox import EditorBox
-from .MessageBox import MessageBox
+from .MessageList import MessageList
 
 class Chat(QWidget):
     def __init__(self, parent: QObject = None):
         QWidget.__init__(self, parent)
 
-        self.messageBox = MessageBox(self)
+        self.messageBox = MessageList(self)
         self.editorBox = EditorBox(self)
 
         lay = QVBoxLayout(self)
