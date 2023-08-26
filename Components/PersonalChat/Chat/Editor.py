@@ -11,6 +11,7 @@ class ScrollBar(QScrollBar):
 
 class Editor(QTextEdit):
     heightChanged = pyqtSignal(int)
+    textSended = pyqtSignal(str)
     def __init__(self, parent: QObject = None):
         QTextEdit.__init__(self, parent)
 
@@ -41,9 +42,13 @@ class Editor(QTextEdit):
             self.setMinimumHeight(h)
             self.heightChanged.emit(h)
 
+    def send(self):
+        self.textSended.emit(self.toPlainText())
+        self.clear()
+
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if (event.key() == Qt.Key.Key_Return  and event.modifiers() == Qt.KeyboardModifier.ShiftModifier) or event.key() == Qt.Key.Key_Enter:
-            print("send")
+            self.send()
             return
 
         QTextEdit.keyPressEvent(self, event)

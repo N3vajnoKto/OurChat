@@ -36,18 +36,17 @@ class ScrollStack(QWidget):
 
         if not self.max <= y <= self.min:
             if abs(y - self.max) < abs(y - self.min):
-                self.go(self.max)
+                self.scrollTo(self.max)
             else:
-                self.go(self.min)
+                self.scrollTo(self.min)
 
     def wheelEvent(self, event: QWheelEvent) -> None:
         h = event.angleDelta().y()
-        h //= 4
-        h = min(h, 30)
-        h = max(h, -30)
+        h = min(h, 40)
+        h = max(h, -40)
         self.box.move(self.box.x(), max(self.max, min(self.min, self.box.y() + h)))
 
-    def go(self, h: int):
+    def scrollTo(self, h: int):
         if not self.max <= h <= self.min:
             return
         self.box.move(self.x(), h)

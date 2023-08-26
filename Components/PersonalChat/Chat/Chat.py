@@ -4,6 +4,7 @@ from PyQt6.QtGui import QColorConstants
 
 from .EditorBox import EditorBox
 from .MessageList import MessageList
+from .MessageInfo import MessageInfo
 
 class Chat(QWidget):
     def __init__(self, parent: QObject = None):
@@ -20,3 +21,11 @@ class Chat(QWidget):
         lay.addWidget(self.editorBox)
 
         self.setLayout(lay)
+
+        self.editorBox.editor.textSended.connect(self.sendMyMessage)
+
+    def sendMyMessage(self, text: str):
+        info = MessageInfo(text, 0, True)
+        self.messageBox.addWidget(info)
+        pass
+

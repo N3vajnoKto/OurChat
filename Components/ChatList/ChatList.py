@@ -96,3 +96,8 @@ class ChatList(ScrollStack):
         self.addWidget(ChatPreview())
         self.addWidget(ChatPreview())
 
+        self.reset()
+
+    def reset(self):
+        pass
+

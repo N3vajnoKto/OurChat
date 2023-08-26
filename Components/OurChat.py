@@ -1,9 +1,10 @@
-from PyQt6.QtWidgets import QWidget, QSplitter
+from PyQt6.QtWidgets import QWidget, QStackedLayout, QGridLayout
 from PyQt6.QtGui import QPalette, QColor, QColorConstants, QResizeEvent
-from PyQt6.QtCore import QObject, Qt
+from PyQt6.QtCore import QObject, Qt, pyqtSignal
 
-from .WorkSpace import WorkSpace
-from .HomeSpace import HomeSpace
+from .Layers.MainPage.MainPage import MainPage
+from .Layers.Layer.Layer import Layer
+from .Settings.SideBar import SideBar
 
 
 class OurChat(QWidget):
@@ -12,22 +13,36 @@ class OurChat(QWidget):
 
         self.resize(1000, 600)
         self.setWindowTitle("OurChat")
-        self.setMinimumSize(400, 200)
+        self.setMinimumSize(400, 400)
 
-        self.workSpace = WorkSpace(self)
-        self.homeSpace = HomeSpace(self)
-        self.splitter = QSplitter(self)
-        self.splitter.resize(self.size())
-        self.splitter.setContentsMargins(0, 0, 0, 0)
-        self.splitter.addWidget(self.homeSpace)
-        self.splitter.addWidget(self.workSpace)
-        self.splitter.setChildrenCollapsible(False)
-        self.splitter.setHandleWidth(0)
+        self.mainPage = MainPage()
+        # self.layer = Layer()
 
-        self.setAutoFillBackground(True)
-        pal = self.palette()
-        pal.setColor(QPalette.ColorRole.Window, QColor(255, 0, 0))
-        self.setPalette(pal)
+        lay = QStackedLayout()
+        lay.setContentsMargins(0, 0, 0, 0)
+        lay.setStackingMode(QStackedLayout.StackingMode.StackAll)
+        lay.addWidget(self.mainPage)
+        # lay.addWidget(self.layer)
 
-    def resizeEvent(self, a0: QResizeEvent) -> None:
-        self.splitter.resize(a0.size())
+        self.stack = lay
+
+        self.setLayout(lay)
+
+        # self.layer.clicked.connect(self.focusMainPage)
+
+        # self.currentPage = self.mainPage
+        #
+        # self.focusMainPage()
+        # print(self.stack.currentWidget())
+
+    # def resizeEvent(self, event: QResizeEvent) -> None:
+    #     if self.currentPage is not None:
+    #         self.currentPage.resize(event.size())
+    #
+    #
+    # def focusMainPage(self):
+    #     self.stack.setCurrentWidget(self.mainPage)
+    #
+    # def focusLayer(self):
+    #     self.stack.setCurrentWidget(self.layer)
+

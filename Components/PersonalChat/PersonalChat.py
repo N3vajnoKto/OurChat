@@ -15,10 +15,9 @@ class PersonalChat(QWidget):
         self.name = name
         self.infoBoard = InfoBoard(self.name, self)
         self.workSpace = PageList(self)
-        self.chat = Chat(self)
+        self.chat = Chat()
 
-        w = QWidget(self)
-        w2 = QWidget(self)
+        w = QWidget()
 
         w.setAutoFillBackground(True)
         pal = w.palette()

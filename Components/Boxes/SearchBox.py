@@ -1,22 +1,37 @@
-from PyQt6.QtWidgets import QWidget, QGridLayout, QLineEdit
+from PyQt6.QtWidgets import QWidget, QGridLayout, QLineEdit, QHBoxLayout
 from PyQt6.QtCore import Qt, QObject, pyqtSignal
-from PyQt6.QtGui import QPen, QKeyEvent, QColor, QFont, QColorConstants, QPaintEvent, QPainter, QBrush
+from PyQt6.QtGui import QPen, QPalette, QKeyEvent, QColor, QFont, QColorConstants, QPaintEvent, QPainter, QIcon, QBrush, QResizeEvent
+
+from .IconButton import IconButton
 
 
-class SearchLine(QLineEdit):
+class SearchLine(QWidget):
     def __init__(self, parent: QObject = None):
-        QLineEdit.__init__(self, parent)
+        QWidget.__init__(self, parent)
 
-        self.setAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.setFont(QFont("Open Sans", 10))
-        self.setPlaceholderText("Search...")
-        self.setFrame(False)
+        self.lineEdit = QLineEdit(self)
 
-        pal = self.palette()
-        pal.setColor(self.backgroundRole(), QColorConstants.Transparent)
-        self.setPalette(pal)
+        self.lineEdit.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.lineEdit.setFont(QFont("Open Sans", 10))
+        self.lineEdit.setPlaceholderText("Search...")
+        self.lineEdit.setFrame(False)
 
-        self.setContentsMargins(10, 5, 10, 5)
+        self.closeButton = IconButton(QIcon("Components/Resources/icons/close.png"), self)
+
+        self.closeButton.setFixedSize(15, 15)
+
+        pal = self.lineEdit.palette()
+        pal.setColor(QPalette.ColorRole.Base, QColorConstants.Transparent)
+        self.lineEdit.setPalette(pal)
+
+        lay = QHBoxLayout(self)
+        lay.setSpacing(0)
+        lay.setContentsMargins(10, 0, 10, 0)
+
+        lay.addWidget(self.lineEdit)
+        lay.addWidget(self.closeButton)
+
+        self.setLayout(lay)
 
     def paintEvent(self, event: QPaintEvent) -> None:
         painter = QPainter(self)
@@ -29,16 +44,8 @@ class SearchLine(QLineEdit):
 
         painter.drawRoundedRect(0, 0, self.width(), self.height(), r, r)
 
-        QLineEdit.paintEvent(self, event)
-
     def search(self):
         print("searching", self.size())
-
-    def keyPressEvent(self, e: QKeyEvent) -> None:
-        if (e.key() == Qt.Key.Key_Return):
-            self.search()
-        else:
-            QLineEdit.keyPressEvent(self, e)
 
 
 class SearchBox(QWidget):
@@ -57,6 +64,6 @@ class SearchBox(QWidget):
 
         lay = QGridLayout(self)
         lay.setSpacing(0)
-        lay.setContentsMargins(10, 5, 10, 5)
+        lay.setContentsMargins(10, 8, 10, 8)
         lay.addWidget(self.searchLine)
         self.setLayout(lay)

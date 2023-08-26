@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLab
 from PyQt6.QtCore import Qt, QObject, QEvent
 from PyQt6.QtGui import QPalette, QColor, QColorConstants, QResizeEvent, QEnterEvent, QFont
 
-from ..Avatar import Avatar
+from ..Boxes.Avatar import Avatar
 
 class ChatPreview(QWidget):
     def __init__(self, name: str = "SomeOne", parent: QObject = None):
