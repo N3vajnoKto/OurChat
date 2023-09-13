@@ -3,6 +3,7 @@ from PyQt6.QtCore import QObject, Qt, pyqtSignal, QEvent
 from PyQt6.QtGui import QPalette, QColor, QColorConstants, QResizeEvent, QFocusEvent
 
 from .Layers.MainPage.MainPage import MainPage
+from .Layers.Enterence.Enterence import Enterence
 from .Layers.Layer.Layer import Layer
 from .Settings.SideBar import SideBar
 from .OurChatUi import OurChatUi
@@ -18,11 +19,13 @@ class OurChat(OurChatUi):
         self.setWindowTitle("OurChat")
         self.setMinimumSize(400, 400)
 
+        self.enterence = Enterence(self)
         self.layer = Layer(self)
         self.mainPage = MainPage(self)
 
         self.mainPage.setGeometry(0, 0, self.width(), self.height())
         self.layer.setGeometry(0, 0, self.width(), self.height())
+        self.enterence.setGeometry(0, 0, self.width(), self.height())
 
         self.layer.clicked.connect(self.focusMainPage)
 
@@ -30,6 +33,7 @@ class OurChat(OurChatUi):
     def resizeEvent(self, event: QResizeEvent) -> None:
         self.mainPage.resize(event.size())
         self.layer.resize(event.size())
+        self.enterence.resize(event.size())
 
     def focusMainPage(self):
         self.mainPage.raise_()
@@ -45,6 +49,14 @@ class OurChat(OurChatUi):
                                    QFocusEvent(QEvent.Type.FocusOut, Qt.FocusReason.NoFocusReason))
         self.setFocus(Qt.FocusReason.NoFocusReason)
 
+    def focusEnterence(self):
+        self.enterence.raise_()
+        if QApplication.focusWidget() is not None:
+            QApplication.sendEvent(QApplication.focusWidget(),
+                                   QFocusEvent(QEvent.Type.FocusOut, Qt.FocusReason.NoFocusReason))
+        self.setFocus(Qt.FocusReason.NoFocusReason)
+
     def openSidebar(self):
         self.focusLayer()
         self.layer.openSidebar()
+

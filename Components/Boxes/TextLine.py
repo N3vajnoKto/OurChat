@@ -5,6 +5,7 @@ from PyQt6.QtCore import Qt, QObject, pyqtSignal, QEvent, QPointF
 from PyQt6.QtGui import QPalette, QFontMetrics, QColor, QColorConstants, QResizeEvent, QPainter, QFont, QMouseEvent, \
     QCursor
 
+from .. import UiController
 
 class TextLine(QLabel):
     def __init__(self, *args):
@@ -14,6 +15,7 @@ class TextLine(QLabel):
             self.text: str = ""
         QLabel.__init__(self, *args)
 
+        self.setFont(UiController.DefaultFont)
         self.calc()
         self.correct()
 

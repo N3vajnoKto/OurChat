@@ -27,6 +27,8 @@ class SideBar(QWidget):
 
         add.setFixedHeight(UiController.DefaultLineHeight)
 
+        add.clicked.connect(UiController.Chat.focusEnterence)
+
         self.accountList.addWidget(add)
 
         self.accountScroll.setWidget(self.accountList)

@@ -1,17 +1,19 @@
 from PyQt6.QtWidgets import QWidget, QStackedLayout, QGridLayout
 from PyQt6.QtGui import QPalette, QColor, QColorConstants, QResizeEvent
-from PyQt6.QtCore import QObject, Qt, pyqtSignal
+from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 
 
 class OurChatUi(QWidget):
     def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
-
     def focusMainPage(self):
         pass
 
     def focusLayer(self):
+        pass
+
+    def focusEnterence(self):
         pass
 
     def openSidebar(self):
