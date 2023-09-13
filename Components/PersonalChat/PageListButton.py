@@ -2,9 +2,11 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QGridLayo
 from PyQt6.QtCore import QObject, QMargins, Qt, pyqtBoundSignal, pyqtSignal, QPoint, QEvent
 from PyQt6.QtGui import QCursor, QEnterEvent, QMoveEvent, QPalette, QColor, QResizeEvent, QColorConstants, QFont, QMouseEvent, QPaintEvent, QPainter, QColor, QBrush, QPen, QPainterPath
 
+from .. import UiController
+
 
 class Neighbour(QWidget):
-    def __init__(self, w: int, parent: QObject = None):
+    def __init__(self, w: int, parent: QObject | None = None):
         QWidget.__init__(self, parent)
         self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
         
@@ -46,7 +48,7 @@ class Neighbour(QWidget):
 
 class PageListButton(QWidget):
     clicked = pyqtSignal(int)
-    def __init__(self, name: str = "button", w: QWidget = None, parent: QObject = None):
+    def __init__(self, name: str = "button", w: QWidget = None, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.name = name
@@ -54,7 +56,7 @@ class PageListButton(QWidget):
         self.index = 0
         self.rad = 12
 
-        self.setAttribute(Qt.WidgetAttribute.WA_Hover, True);
+        self.setAttribute(Qt.WidgetAttribute.WA_Hover, True)
 
         self.left: Neighbour = Neighbour(0, parent)
         self.right: Neighbour = Neighbour(1, parent)
@@ -77,7 +79,7 @@ class PageListButton(QWidget):
         self.label = QLabel(self)
         self.label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
         self.label.setText(self.name)
-        self.label.setFont(QFont("Open Sans", 10, QFont.Weight.Medium))
+        self.label.setFont(QFont(UiController.DefaultFontFamily, 10, QFont.Weight.Medium))
 
         lay = QGridLayout(self)
         lay.setContentsMargins(QMargins(5, 0, 5, 0))

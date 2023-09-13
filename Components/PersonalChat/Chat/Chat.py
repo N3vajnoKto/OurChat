@@ -7,7 +7,7 @@ from .MessageList import MessageList
 from .MessageInfo import MessageInfo
 
 class Chat(QWidget):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.messageBox = MessageList(self)

@@ -2,12 +2,12 @@ from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QPalette, QColor, QColorConstants, QMouseEvent, QResizeEvent
 from PyQt6.QtCore import QObject, Qt, pyqtSignal, QEvent
 
-from ...Settings.SideBar import SideBar
+from ...Settings.SideBar.SideBar import SideBar
 
 
 class Layer(QWidget):
     clicked = pyqtSignal()
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         self.active: bool = False
         QWidget.__init__(self, parent)
 
@@ -33,15 +33,13 @@ class Layer(QWidget):
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         self.clicked.emit()
-        self.sidebar.remove()
+        self.close()
 
-    # def event(self, event: QEvent) -> bool:
-    #     if self.isActive():
-    #         if event.type == QEvent.Type.MouseButtonPress:
-    #             self.mousePressEvent(event)
-    #             return True
-    #         else:
-    #             return QWidget.event(self, event)
-    #     else:
-    #         return True
+    def close(self):
+        self.sidebar.hide()
+        self.sidebar.setEnabled(False)
+
+    def openSidebar(self):
+        self.sidebar.show()
+        self.sidebar.setEnabled(True)
 

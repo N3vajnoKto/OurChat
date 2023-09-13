@@ -3,10 +3,10 @@ from PyQt6.QtCore import QObject, QMargins, Qt, pyqtBoundSignal, pyqtSignal, QPo
 from PyQt6.QtGui import QCursor, QEnterEvent, QMoveEvent, QPalette, QColor, QResizeEvent, QColorConstants, QFont, QMouseEvent, QPaintEvent, QPainter, QColor, QBrush, QPen, QPainterPath
 
 from .PageListButton import PageListButton
-
+from .. import UiController
 
 class EmptyPage(QWidget):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.setAutoFillBackground(True)
@@ -16,7 +16,7 @@ class EmptyPage(QWidget):
 
         self.label = QLabel(self)
         self.label.setText("Empty Page")
-        self.label.setFont(QFont("Open Sans", 30, QFont.Weight.Bold))
+        self.label.setFont(QFont(UiController.DefaultFontFamily, 30, QFont.Weight.Bold))
         
         pal = self.label.palette()
         pal.setColor(self.label.foregroundRole(), QColor(235, 235, 235))
@@ -30,7 +30,7 @@ class EmptyPage(QWidget):
 
 
 class PageListWorkZone(QWidget):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
         self.__centralWidget = EmptyPage(self)
 
@@ -63,7 +63,7 @@ class PageListWorkZone(QWidget):
         
 
 class PageListButtonZone(QWidget):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.setFixedHeight(30)
@@ -81,7 +81,7 @@ class PageListButtonZone(QWidget):
 
 
 class PageList(QWidget):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
         self.widgetList = []
         self.buttonList = []

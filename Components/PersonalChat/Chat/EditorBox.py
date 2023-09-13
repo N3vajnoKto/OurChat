@@ -5,13 +5,13 @@ from PyQt6.QtGui import QColorConstants, QResizeEvent, QKeyEvent, QShortcut, QKe
 from .Editor import Editor
 
 class SendButton(QWidget):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(36, 36)
 
 
 class EditorBox(QWidget):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.setFixedHeight(36)

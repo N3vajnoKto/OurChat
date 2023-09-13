@@ -6,10 +6,11 @@ from PyQt6.QtGui import QColorConstants, QPalette, QPen, QFont, QWheelEvent, QRe
     QPaintEvent, QPainterPath
 
 from .MessageInfo import MessageInfo, MessageInfoBox
+from ... import UiController
 
 
 class MyTextEdit(QTextEdit):
-    def __init__(self, text: str, parent: QObject = None):
+    def __init__(self, text: str, parent: QObject | None = None):
         QTextEdit.__init__(self, text, parent)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
@@ -21,7 +22,7 @@ class MyTextEdit(QTextEdit):
         e.ignore()
 
 class Message(QWidget):
-    def __init__(self, info: MessageInfo, parent: QObject = None):
+    def __init__(self, info: MessageInfo, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.setMaximumWidth(300)
@@ -34,7 +35,7 @@ class Message(QWidget):
         self.text = MyTextEdit(self.info.text, self)
         self.text.setLineWrapMode(QTextEdit.LineWrapMode.FixedPixelWidth)
         self.text.setFrameShape(QFrame.Shape.NoFrame)
-        self.text.setFont(QFont("Open Sans", 10))
+        self.text.setFont(QFont(UiController.DefaultFontFamily, 10))
         self.text.setReadOnly(True)
         self.text.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.text.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)

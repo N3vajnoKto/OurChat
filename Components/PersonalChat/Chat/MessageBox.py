@@ -10,7 +10,7 @@ from .MessageInfo import MessageInfo
 
 
 class MessageBox(QWidget):
-    def __init__(self, info: MessageInfo, parent: QObject = None):
+    def __init__(self, info: MessageInfo, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.connectMargins: QMargins = QMargins(2, 1, 2, 0)
@@ -97,7 +97,7 @@ class MessageBox(QWidget):
 
 class MessageFrame(QWidget):
     count: int = 0
-    def __init__(self, message: Message = None, parent: QWidget = None):
+    def __init__(self, message: Message = None, parent: QObject | None = None):
         QWidget.__init__(self, parent)
         self.message = message
         if self.message is not None:

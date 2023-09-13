@@ -1,71 +1,69 @@
+from typing import Optional
+from enum import Enum
+
 from PyQt6.QtWidgets import QWidget, QLabel, QGridLayout
-from PyQt6.QtGui import QColorConstants, QPaintEvent, QPainter, QBrush, QPen, QResizeEvent, QImage, QColor, QLinearGradient, QFont
-from PyQt6.QtCore import Qt
-from random import randint
+from PyQt6.QtCore import Qt, QObject
+from PyQt6.QtGui import QColorConstants, QPaintEvent, QPainter, QBrush, QPen, QResizeEvent, QImage, QColor, \
+    QLinearGradient, QFont, QFontMetrics
+
+from ..Back_End.Account import *
+from .. import UiController
+
 
 class Avatar(QWidget):
-    def __init__(self, rad: int = 22, nm: str = "E", parent=None):
+    class AvatarForm(Enum):
+        Rectangle = 0
+        Rounded = 1
+
+    def __init__(self, acc: Account, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
-        self.__radius = rad
-        self.img: QImage = None
-        self.name: str = nm
+        self.account = acc
 
-        self.letter = QLabel(self)
-        self.letter.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
-        self.letter.setText(self.name[0])
-        self.letter.setFont(QFont("Open Sans", rad, QFont.Weight.Medium))
-        
-        pal = self.letter.palette()
-        pal.setColor(self.letter.foregroundRole(), QColorConstants.White)
-        self.letter.setPalette(pal)
+        self.form: Avatar.AvatarForm = Avatar.AvatarForm.Rounded
 
-        lay = QGridLayout(self)
-        lay.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        lay.addWidget(self.letter)
-        self.setLayout(lay)
+        self.setFont(UiController.DefaultFont)
 
-        if self.img != None:
-            self.letter.hide()
-            self.letter.setDisabled(True)
+        self.metrics: QFontMetrics = QFontMetrics(self.font())
 
-        self.bckColor: QColor = QColor.fromHsv(randint(0, 359), randint(200, 255), randint(220, 240))
+    def setAvatarRadius(self, rad: int):
+        self.setFixedSize(rad * 2, rad * 2)
 
-        self.setFixedSize(2 * rad, 2 * rad)
+    def setForm(self, f: AvatarForm):
+        self.form = f
 
-    def setImage(self, p: QImage):
-        self.img = p
-        if self.img != None:
-            self.letter.hide()
-            self.letter.setDisabled(True)
+    def resizeEvent(self, event: QResizeEvent) -> None:
+        self.setFont(QFont(UiController.DefaultFontFamily, min(int(self.height() * 0.5), 35), QFont.Weight.Medium))
+        self.metrics = QFontMetrics(self.font())
 
-    def image(self):
-        return self.img
-
-    def radius(self):
-        return self.__radius
-
-    def setRadius(self, rad: int):
-        self.__radius = rad
-        self.setFixedSize(2 * rad, 2 * rad)
+    def setAccount(self, acc: Account):
+        self.account = acc
 
     def paintEvent(self, event: QPaintEvent) -> None:
         painter = QPainter(self)
 
+        rad = self.height() // 2
+
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        if (self.img != None):
-            painter.setBrush(QBrush(self.img))
+        if self.account.avatar() is not None:
+            painter.setBrush(QBrush(self.account.avatar()))
         else:
             g = QLinearGradient(0, 0, self.width(), self.height())
-            fc = QColor.fromHsv(self.bckColor.hslHue(), self.bckColor.hsvSaturation() - 120, self.bckColor.value())
+            bkc = self.account.backgroundColor()
+            fc = QColor.fromHsv(bkc.hslHue(), bkc.hsvSaturation() - 120, bkc.value())
             g.setColorAt(0, fc)
-            g.setColorAt(1, self.bckColor)
+            g.setColorAt(1, bkc)
             painter.setBrush(QBrush(g))
         painter.setPen(QPen(QColorConstants.Transparent, 0))
-        painter.drawRoundedRect(self.rect(), self.radius(), self.radius())
+        if self.form == Avatar.AvatarForm.Rounded:
+            painter.drawRoundedRect(self.rect(), rad, rad)
+
+        if self.form == Avatar.AvatarForm.Rectangle:
+            painter.drawRect(self.rect())
+
         painter.setPen(QPen(QColorConstants.White, 0))
-        super().paintEvent(event)
-
-    
-        
-
+        letter = self.account.name()[0]
+        painter.setFont(self.font())
+        if self.form == Avatar.AvatarForm.Rectangle:
+            print(self.metrics.height())
+        painter.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, letter)

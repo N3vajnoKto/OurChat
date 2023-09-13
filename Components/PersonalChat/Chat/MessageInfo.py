@@ -5,6 +5,7 @@ from PyQt6.QtCore import QObject
 from PyQt6.QtGui import QColorConstants, QFont, QFontMetrics
 
 from typing import Self
+from ... import UiController
 
 class MessageInfo:
     def __init__(self, text: str = "Empty Message", time: int = 0, mine: bool = False, checked: bool = False):
@@ -53,13 +54,13 @@ class MessageInfo:
         return res
 
 class MessageInfoBox(QWidget):
-    def __init__(self, info: MessageInfo, parent: QObject = None):
+    def __init__(self, info: MessageInfo, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.info = copy.copy(info)
 
         self.time = QLabel(info.timeInStr(), self)
-        self.time.setFont(QFont("Open Sans", 10))
+        self.time.setFont(QFont(UiController.DefaultFontFamily, 10))
 
         m = QFontMetrics(self.time.font())
 

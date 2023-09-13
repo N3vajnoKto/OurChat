@@ -1,3 +1,5 @@
+from typing import Optional
+
 from PyQt6.QtWidgets import QWidget, QVBoxLayout
 from PyQt6.QtCore import QObject, QMargins
 from PyQt6.QtGui import QPalette, QColor, QResizeEvent
@@ -6,14 +8,16 @@ from .InfoBoard import InfoBoard
 from .PageList import PageList
 from .Chat.Chat import Chat
 
+from ..Back_End.Account import *
+
 
 class PersonalChat(QWidget):
-    def __init__(self, name: str, parent=None):
+    def __init__(self, acc: Optional[Account] = Account, parent: QObject | None =None):
         QWidget.__init__(self, parent)
         self.setMinimumSize(300, 300)
 
-        self.name = name
-        self.infoBoard = InfoBoard(self.name, self)
+        self.account: Optional[Account] = acc
+        self.infoBoard = InfoBoard(acc, self)
         self.workSpace = PageList(self)
         self.chat = Chat()
 
@@ -40,6 +44,10 @@ class PersonalChat(QWidget):
         pal = self.palette()
         pal.setColor(QPalette.ColorRole.Window, QColor(245, 245, 245))
         self.setPalette(pal)
+
+    def setAccount(self, acc: Account):
+        self.account = acc
+        self.infoBoard.setAccount(acc)
 
     def infoBoardHeight(self) -> int:
         return self.__infoBoardHeight

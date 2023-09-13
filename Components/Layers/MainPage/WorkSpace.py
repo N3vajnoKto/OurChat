@@ -1,17 +1,18 @@
 from PyQt6.QtWidgets import QWidget
+from PyQt6.QtCore import QObject
 from PyQt6.QtGui import QPalette, QColor, QColorConstants, QResizeEvent
 
 from ...PersonalChat.PersonalChat import PersonalChat
-
+from ...Back_End.Account import *
 
 class WorkSpace(QWidget):
-    def __init__(self, parent = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.resize(200, 300)
         self.setMinimumSize(340, 300)
 
-        self.centralWidget:QWidget = PersonalChat("Девушка Рядом С Кириллом", self)
+        self.centralWidget:QWidget = PersonalChat(EmptyAccount, self)
 
         self.setAutoFillBackground(True)
         pal = self.palette()

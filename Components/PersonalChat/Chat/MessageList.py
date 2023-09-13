@@ -7,7 +7,7 @@ from .MessageBox import MessageBox
 from .MessageBox import MessageInfo
 
 class MessageList(ScrollStack):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         ScrollStack.__init__(self, parent)
 
         self.setAutoFillBackground(True)

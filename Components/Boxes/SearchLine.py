@@ -1,24 +1,25 @@
 from PyQt6.QtWidgets import QWidget, QGridLayout, QLineEdit, QHBoxLayout
 from PyQt6.QtCore import Qt, QObject, pyqtSignal
-from PyQt6.QtGui import QPen, QPalette, QKeyEvent, QColor, QFont, QColorConstants, QPaintEvent, QPainter, QIcon, QBrush, QResizeEvent
+from PyQt6.QtGui import QPen, QPalette, QKeyEvent, QColor, QFont, QColorConstants, QPaintEvent, QPainter, QIcon, QBrush, QFocusEvent
 
 from .IconButton import IconButton
+from .. import UiController
 
 
 class SearchLine(QWidget):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.lineEdit = QLineEdit(self)
 
         self.lineEdit.setAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.lineEdit.setFont(QFont("Open Sans", 10))
+        self.lineEdit.setFont(QFont(UiController.DefaultFontFamily, 10))
         self.lineEdit.setPlaceholderText("Search...")
         self.lineEdit.setFrame(False)
 
-        self.closeButton = IconButton(QIcon("Components/Resources/icons/close.png"), self)
+        self.closeButton = IconButton(QIcon("Components/Resources/icons/close.svg"), self)
 
-        self.closeButton.setFixedSize(15, 15)
+        self.closeButton.setFixedSize(UiController.DefaultButtonSize)
 
         pal = self.lineEdit.palette()
         pal.setColor(QPalette.ColorRole.Base, QColorConstants.Transparent)
@@ -46,24 +47,3 @@ class SearchLine(QWidget):
 
     def search(self):
         print("searching", self.size())
-
-
-class SearchBox(QWidget):
-    def __init__(self, parent: QObject = None):
-        QWidget.__init__(self, parent)
-
-        self.setFixedHeight(54)
-
-        self.setAutoFillBackground(True)
-
-        pal = self.palette()
-        pal.setColor(self.backgroundRole(), QColorConstants.White)
-        self.setPalette(pal)
-
-        self.searchLine = SearchLine(self)
-
-        lay = QGridLayout(self)
-        lay.setSpacing(0)
-        lay.setContentsMargins(10, 8, 10, 8)
-        lay.addWidget(self.searchLine)
-        self.setLayout(lay)

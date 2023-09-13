@@ -7,7 +7,7 @@ from .HomeSpace import HomeSpace
 
 
 class MainPage(QWidget):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.setMinimumSize(400, 400)

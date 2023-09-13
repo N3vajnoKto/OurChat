@@ -1,12 +1,14 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout
-from PyQt6.QtCore import Qt, QRect
-from PyQt6.QtGui import QPalette, QColor, QColorConstants, QResizeEvent, QPainter, QBrush
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
+from PyQt6.QtCore import Qt, QRect, QObject
+from PyQt6.QtGui import QPalette, QColor, QColorConstants, QResizeEvent, QPainter, QBrush, QIcon
 
+from ... import UiController
 from ...ChatList.ChatList import ChatList
-from ...Boxes.SearchBox import SearchBox
+from .SearchBox import SearchBox
+from ...Boxes.IconButton import IconButton
 
 class HomeSpace(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
         self.resize(200, 300)
@@ -17,22 +19,16 @@ class HomeSpace(QWidget):
         pal.setColor(QPalette.ColorRole.Window, QColorConstants.Green)
         self.setPalette(pal)
         self.searchBox = SearchBox(self)
-        self.centralWidget = None
+        self.chatList = ChatList(self)
 
         lay = QVBoxLayout(self)
         lay.setSpacing(0)
         lay.setContentsMargins(0, 0, 0, 0)
+
         lay.addWidget(self.searchBox)
+        lay.addWidget(self.chatList)
+
         self.setLayout(lay)
 
-        self.chatList = ChatList()
-
         self.searchBox.searchLine.closeButton.clicked.connect(self.chatList.reset)
-
-        self.setCentralWidget(self.chatList)
-
-    def setCentralWidget(self, w: QWidget = None):
-        if self.centralWidget is not None:
-            self.layout().removeWidget(self.centralWidget)
-        self.centralWidget = w
-        self.layout().addWidget(w)
+        self.searchBox.menuButton.clicked.connect(UiController.Chat.openSidebar)
