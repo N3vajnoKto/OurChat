@@ -3,30 +3,8 @@ from PyQt6.QtCore import QObject, QMargins, Qt, pyqtBoundSignal, pyqtSignal, QPo
 from PyQt6.QtGui import QCursor, QEnterEvent, QMoveEvent, QPalette, QColor, QResizeEvent, QColorConstants, QFont, QMouseEvent, QPaintEvent, QPainter, QColor, QBrush, QPen, QPainterPath
 
 from .PageListButton import PageListButton
+from ..Boxes.EmptyPage import EmptyPage
 from .. import UiController
-
-class EmptyPage(QWidget):
-    def __init__(self, parent: QObject | None = None):
-        QWidget.__init__(self, parent)
-
-        self.setAutoFillBackground(True)
-        pal = self.palette()
-        pal.setColor(self.backgroundRole(), QColor(245, 245, 245))
-        self.setPalette(pal)
-
-        self.label = QLabel(self)
-        self.label.setText("Empty Page")
-        self.label.setFont(QFont(UiController.DefaultFontFamily, 30, QFont.Weight.Bold))
-        
-        pal = self.label.palette()
-        pal.setColor(self.label.foregroundRole(), QColor(235, 235, 235))
-        self.label.setPalette(pal)
-
-        lay = QGridLayout(self)
-        lay.setContentsMargins(QMargins(0, 0, 0, 0))
-        lay.setSpacing(0)
-        lay.addWidget(self.label)
-        lay.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 
 class PageListWorkZone(QWidget):
@@ -66,14 +44,14 @@ class PageListButtonZone(QWidget):
     def __init__(self, parent: QObject | None = None):
         QWidget.__init__(self, parent)
 
-        self.setFixedHeight(30)
+        self.setFixedHeight(40)
 
         empty = QWidget(self)
 
         self.lay = QHBoxLayout(self)
-        self.lay.setSpacing(0)
-        self.lay.setContentsMargins(QMargins(5, 0, 5, 0))
-        self.lay.addWidget(empty)
+        self.lay.setSpacing(5)
+        self.lay.setContentsMargins(QMargins(5, 5, 5, 5))
+        self.lay.addStretch()
         self.setLayout(self.lay)
     
     def addButton(self, b: PageListButton):

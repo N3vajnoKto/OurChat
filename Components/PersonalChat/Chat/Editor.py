@@ -16,7 +16,7 @@ class Editor(QTextEdit):
     def __init__(self, parent: QObject | None = None):
         QTextEdit.__init__(self, parent)
 
-        self.maxHeight = 12
+        self.maxHeight = 300
         self.setPlaceholderText("Write a message...")
         self.setFont(QFont(UiController.DefaultFontFamily, 10))
         self.setFrameShape(QFrame.Shape.NoFrame)
@@ -39,16 +39,26 @@ class Editor(QTextEdit):
     def updateSizeAcWidth(self):
         h = int(self.document().size().height())
 
-        if self.height() != h:
+        if self.height() != h and h <= self.maxHeight:
             self.setMinimumHeight(h)
             self.heightChanged.emit(h)
 
+    def textIsValid(self):
+        text = self.toPlainText()
+
+        if len(text) != 0:
+            return True
+        else:
+            return False
+
     def send(self):
+        if not self.textIsValid():
+            return
         self.textSended.emit(self.toPlainText())
         self.clear()
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
-        if (event.key() == Qt.Key.Key_Return  and event.modifiers() == Qt.KeyboardModifier.ShiftModifier) or event.key() == Qt.Key.Key_Enter:
+        if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
             self.send()
             return
 

@@ -8,7 +8,6 @@ class IconButton(ButtonBox):
     def __init__(self, icon: QIcon, parent: QObject | None = None):
         ButtonBox.__init__(self, parent)
         self.icon = icon
-        print(icon.name())
 
 
     def paintEvent(self, event: QPaintEvent) -> None:

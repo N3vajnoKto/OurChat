@@ -1,4 +1,5 @@
 import copy
+from typing import Optional
 
 from PyQt6.QtWidgets import QWidget, QLabel
 from PyQt6.QtCore import QObject
@@ -14,8 +15,8 @@ class MessageInfo:
         self.checked: bool = checked
         self.text = text
 
-        self.topConnecter: MessageInfo = None
-        self.bottomConnecter: MessageInfo = None
+        self.topConnecter: Optional[MessageInfo] = None
+        self.bottomConnecter: Optional[MessageInfo] = None
 
     def connectTop(self, lnk: Self):
         if lnk is None:
@@ -60,14 +61,14 @@ class MessageInfoBox(QWidget):
         self.info = copy.copy(info)
 
         self.time = QLabel(info.timeInStr(), self)
-        self.time.setFont(QFont(UiController.DefaultFontFamily, 10))
+        self.time.setFont(QFont(UiController.DefaultFontFamily, 8))
 
         m = QFontMetrics(self.time.font())
 
         w = int(m.boundingRect(self.time.text()).width())
         h = int(m.boundingRect(self.time.text()).height())
 
-        self.time.resize(w + 6, h)
+        self.time.resize(w + self.time.contentsMargins().left() + self.time.contentsMargins().right() + 3, h)
 
         pal = self.palette()
         pal.setColor(self.foregroundRole(), QColorConstants.Gray)

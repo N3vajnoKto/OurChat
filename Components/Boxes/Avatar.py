@@ -64,6 +64,4 @@ class Avatar(QWidget):
         painter.setPen(QPen(QColorConstants.White, 0))
         letter = self.account.name()[0]
         painter.setFont(self.font())
-        if self.form == Avatar.AvatarForm.Rectangle:
-            print(self.metrics.height())
         painter.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, letter)

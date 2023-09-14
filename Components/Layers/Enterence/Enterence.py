@@ -14,6 +14,9 @@ class LogInField(QWidget):
         QWidget.__init__(self, parent)
 
         self.title = TextLine("Log in", self)
+        pal = self.title.palette()
+        pal.setColor(self.title.foregroundRole(), UiController.DarkThemeColor)
+        self.title.setPalette(pal)
         self.title.setFont(QFont(UiController.DefaultFontFamily, 20))
         self.title.setFixedHeight(50)
 
@@ -72,6 +75,9 @@ class RegisterField(QWidget):
         QWidget.__init__(self, parent)
 
         self.title = TextLine("Register", self)
+        pal = self.title.palette()
+        pal.setColor(self.title.foregroundRole(), UiController.DarkThemeColor)
+        self.title.setPalette(pal)
         self.title.setFont(QFont(UiController.DefaultFontFamily, 20))
         self.title.setFixedHeight(50)
 

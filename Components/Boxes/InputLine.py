@@ -41,7 +41,7 @@ class InputLine(QLineEdit):
         painter.setPen(QPen(QColorConstants.Transparent, 0))
         painter.drawRect(self.rect())
 
-        painter.setPen(QPen(UiController.Gray, 3))
+        painter.setPen(QPen(UiController.ThemeColor, 3))
         painter.drawLine(0, self.rect().height(), self.rect().width(), self.rect().height())
 
         painter.end()

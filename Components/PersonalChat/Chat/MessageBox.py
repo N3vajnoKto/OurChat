@@ -7,11 +7,12 @@ from typing import Self
 
 from .Message import Message
 from .MessageInfo import MessageInfo
+from ...Boxes.VWidget import VWidget
 
 
-class MessageBox(QWidget):
+class MessageBox(VWidget):
     def __init__(self, info: MessageInfo, parent: QObject | None = None):
-        QWidget.__init__(self, parent)
+        VWidget.__init__(self, parent)
 
         self.connectMargins: QMargins = QMargins(2, 1, 2, 0)
         self.disconnectMargins: QMargins = QMargins(2, 5, 2, 0)
@@ -21,6 +22,7 @@ class MessageBox(QWidget):
         self.message = Message(info, self)
 
         self.messageFrame.setMessage(self.message)
+        self.message.setMaximumWidth(self.maxWidth())
 
         self.arrange()
 
@@ -35,6 +37,7 @@ class MessageBox(QWidget):
         else:
             self.margins.setBottom(self.disconnectMargins.bottom())
 
+
         if (self.messageFrame.height() + self.margins.top() + self.margins.bottom() != self.height()):
             self.setFixedHeight(self.messageFrame.height() + self.margins.top() + self.margins.bottom())
 
@@ -44,6 +47,9 @@ class MessageBox(QWidget):
         else:
             self.messageFrame.move(self.margins.left(), self.margins.top())
 
+    def maxWidth(self):
+        return min(450, int(0.7 * self.width()))
+
     def connectMessage(self, other: Self):
         if other is None:
             return
@@ -52,6 +58,13 @@ class MessageBox(QWidget):
         other.messageFrame.update()
         self.arrange()
         other.arrange()
+
+    def resizeWidth(self, w: int):
+        self.resize(w, self.height())
+        self.message.setMaximumWidth(self.maxWidth())
+        self.message.format()
+        self.messageFrame.updateSize()
+        self.arrange()
 
     def mine(self):
         return self.message.info.mine

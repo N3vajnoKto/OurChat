@@ -6,6 +6,7 @@ from ... import UiController
 from ...ChatList.ChatList import ChatList
 from .SearchBox import SearchBox
 from ...Boxes.IconButton import IconButton
+from ...Boxes.VerticalScrollArea import VerticalScrollArea
 
 class HomeSpace(QWidget):
     def __init__(self, parent: QObject | None = None):
@@ -21,12 +22,22 @@ class HomeSpace(QWidget):
         self.searchBox = SearchBox(self)
         self.chatList = ChatList(self)
 
+        self.chatScroll = VerticalScrollArea(self)
+
+        self.chatScroll.setWidget(self.chatList)
+
+        self.chatScroll.setAutoFillBackground(True)
+        pal = self.chatScroll.palette()
+        pal.setColor(self.chatScroll.backgroundRole(), UiController.Light)
+        self.chatScroll.setPalette(pal)
+
+
         lay = QVBoxLayout(self)
         lay.setSpacing(0)
         lay.setContentsMargins(0, 0, 0, 0)
 
         lay.addWidget(self.searchBox)
-        lay.addWidget(self.chatList)
+        lay.addWidget(self.chatScroll)
 
         self.setLayout(lay)
 

@@ -3,15 +3,15 @@ from PyQt6.QtCore import Qt, QObject
 from PyQt6.QtGui import QPalette, QWheelEvent, QColor, QColorConstants, QResizeEvent, QPainter, QBrush
 
 from .ChatPreview import ChatPreview
-from ..Boxes.ScrollStack import ScrollStack
+from ..Boxes.VListWidget import VListWidget
 from ..Back_End.Account import *
 
 from ..Back_End import ApplicationController
+from ..Boxes.VListWidget import VListWidget
 
-
-class ChatList(ScrollStack):
+class ChatList(VListWidget):
     def __init__(self, parent: QObject | None = None):
-        ScrollStack.__init__(self, parent)
+        VListWidget.__init__(self, parent)
 
         self.build()
 

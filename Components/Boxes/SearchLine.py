@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QGridLayout, QLineEdit, QHBoxLayout
-from PyQt6.QtCore import Qt, QObject, pyqtSignal
+from PyQt6.QtCore import Qt, QObject, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QPen, QPalette, QKeyEvent, QColor, QFont, QColorConstants, QPaintEvent, QPainter, QIcon, QBrush, QFocusEvent
 
 from .IconButton import IconButton
@@ -16,6 +16,8 @@ class SearchLine(QWidget):
         self.lineEdit.setFont(QFont(UiController.DefaultFontFamily, 10))
         self.lineEdit.setPlaceholderText("Search...")
         self.lineEdit.setFrame(False)
+
+        self.buttonShown: bool = True
 
         self.closeButton = IconButton(QIcon("Components/Resources/icons/close.svg"), self)
 
@@ -34,11 +36,26 @@ class SearchLine(QWidget):
 
         self.setLayout(lay)
 
+        self.lineEdit.textChanged.connect(self.manageCloseButton)
+        self.closeButton.clicked.connect(self.clear)
+
+        self.manageCloseButton()
+
+    @pyqtSlot()
+    def manageCloseButton(self):
+        if len(self.lineEdit.text()) == 0 and self.buttonShown == True:
+            self.closeButton.hide()
+            self.buttonShown = False
+        elif len(self.lineEdit.text()) != 0 and self.buttonShown == False:
+            self.closeButton.show()
+            self.buttonShown = True
+
+
     def paintEvent(self, event: QPaintEvent) -> None:
         painter = QPainter(self)
 
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        painter.setBrush(QBrush(QColor(245, 245, 245)))
+        painter.setBrush(QBrush(UiController.HoverBackgroundColor))
         painter.setPen(QPen(QColorConstants.Transparent))
 
         r = self.height() / 2
@@ -46,4 +63,8 @@ class SearchLine(QWidget):
         painter.drawRoundedRect(0, 0, self.width(), self.height(), r, r)
 
     def search(self):
-        print("searching", self.size())
+        pass
+
+    @pyqtSlot()
+    def clear(self):
+        self.lineEdit.clear()

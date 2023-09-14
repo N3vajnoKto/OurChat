@@ -7,6 +7,7 @@ from Components import UiController
 from Components.Back_End.Application import Application
 from Components.Back_End import ApplicationController
 from Components.Back_End.Account import Account
+from Components.Back_End.Chat import Chat
 
 
 app = QApplication(sys.argv)
@@ -17,12 +18,9 @@ QFontDatabase.addApplicationFont("Components/Resources/Fonts/Open_Sans/OpenSans-
 
 application = Application()
 
-for i in range(20):
-    application.addChat(Account())
+for i in range(50):
+    application.addChat(Chat(Account()))
 
-application.addAccount(Account())
-application.addAccount(Account())
-application.addAccount(Account())
 application.addAccount(Account())
 application.addAccount(Account())
 application.addAccount(Account())

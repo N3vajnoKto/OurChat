@@ -21,6 +21,8 @@ class SideBar(QWidget):
         self.accountList = AccountList()
 
         for acc in ApplicationController.Application.Accounts():
+            if ApplicationController.Application.currentAccount() == acc:
+                continue
             self.accountList.addAccount(acc)
 
         add = addNewAccountButton()

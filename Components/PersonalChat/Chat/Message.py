@@ -2,17 +2,21 @@ import copy
 
 from PyQt6.QtWidgets import QWidget, QTextEdit, QFrame, QLabel
 from PyQt6.QtCore import QObject, Qt, pyqtSignal, QMargins, QSize
-from PyQt6.QtGui import QColorConstants, QPalette, QPen, QFont, QWheelEvent, QResizeEvent, QBrush, QFontMetrics, QPainter, \
+from PyQt6.QtGui import QColorConstants, QPalette, QPen, QFont, QWheelEvent, QResizeEvent, QBrush, QFontMetrics, \
+    QPainter, \
     QPaintEvent, QPainterPath
 
 from .MessageInfo import MessageInfo, MessageInfoBox
 from ... import UiController
+from ...Boxes.VWidget import VWidget
 
 
 class MyTextEdit(QTextEdit):
     def __init__(self, text: str, parent: QObject | None = None):
         QTextEdit.__init__(self, text, parent)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+
+        self.setFont(UiController.DefaultFont)
 
         pal = self.palette()
         pal.setColor(QPalette.ColorRole.Base, QColorConstants.Transparent)
@@ -21,6 +25,7 @@ class MyTextEdit(QTextEdit):
     def wheelEvent(self, e: QWheelEvent) -> None:
         e.ignore()
 
+
 class Message(QWidget):
     def __init__(self, info: MessageInfo, parent: QObject | None = None):
         QWidget.__init__(self, parent)
@@ -28,14 +33,11 @@ class Message(QWidget):
         self.setMaximumWidth(300)
         self.margins = QMargins(8, 3, 8, 3)
         self.info = info
-        self.spacingX = 0
-        self.spacingY = -18
+        self.infoMargins = QMargins(2, 2, 8, 2)
 
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
         self.text = MyTextEdit(self.info.text, self)
-        self.text.setLineWrapMode(QTextEdit.LineWrapMode.FixedPixelWidth)
         self.text.setFrameShape(QFrame.Shape.NoFrame)
-        self.text.setFont(QFont(UiController.DefaultFontFamily, 10))
         self.text.setReadOnly(True)
         self.text.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.text.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -64,18 +66,22 @@ class Message(QWidget):
 
         self.text.resize(int(self.text.document().size().width()), int(self.text.document().size().height()))
 
-        if self.infoBox.width() + self.text.width() + self.spacingX <= self.maximumWidth() - self.margins.left() - self.margins.right():
-            w = self.text.width() + self.infoBox.width() + self.margins.left() + self.margins.right() + self.spacingX
+        if (self.infoBox.width() + self.infoMargins.left() + self.infoMargins.right()
+                <= self.maximumWidth() - self.margins.left() - self.text.width()
+                and self.maximumWidth() - self.margins.left() - self.margins.left() - self.text.width() >= 0):
+            w = self.text.width() + self.margins.left() + max(self.margins.right(),
+                                                              self.infoBox.width() + self.infoMargins.left() + self.infoMargins.right())
             h = self.text.height() + self.margins.top() + self.margins.bottom()
             self.setFixedSize(w, h)
-            self.infoBox.move(self.margins.left() + self.text.width() + self.spacingX,
-                              self.margins.top() + self.text.height() + self.spacingY)
         else:
             w = self.text.width() + self.margins.left() + self.margins.right()
-            h = self.text.height() + self.margins.top() + self.margins.bottom() + self.infoBox.height()
+            h = self.text.height() + self.margins.top() + max(self.margins.bottom(),
+                                                              self.infoBox.height() + self.infoMargins.top(),
+                                                              self.infoMargins.bottom())
             self.setFixedSize(w, h)
-            self.infoBox.move(self.margins.left() + self.text.width() - self.infoBox.width(),
-                              self.margins.top() + self.text.height())
+
+        self.infoBox.move(self.width() - self.infoBox.width() - self.infoMargins.right(),
+                          self.height() - self.infoBox.height() - self.infoMargins.bottom())
 
         return self.size()
 

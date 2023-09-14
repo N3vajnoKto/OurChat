@@ -100,11 +100,11 @@ class VerticalScrollArea(QWidget):
         self.scrollTo(self.widget.y() + h)
         event.accept()
 
-        ps = self.widget.mapFromGlobal(QCursor.pos())
-        pos = QPointF(ps.x(), ps.y())
-        me = QMouseEvent(QEvent.Type.MouseMove, pos,
-                         Qt.MouseButton.NoButton, Qt.MouseButton.NoButton,
-                         Qt.KeyboardModifier.NoModifier)
-
-        QApplication.sendEvent(self, me)
+        # ps = self.widget.mapFromGlobal(QCursor.pos())
+        # pos = QPointF(ps.x(), ps.y())
+        # me = QMouseEvent(QEvent.Type.MouseMove, pos,
+        #                  Qt.MouseButton.NoButton, Qt.MouseButton.NoButton,
+        #                  Qt.KeyboardModifier.NoModifier)
+        #
+        # QApplication.sendEvent(self, me)
 

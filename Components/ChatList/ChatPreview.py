@@ -8,15 +8,19 @@ from ..Boxes.Avatar import Avatar
 from ..Boxes.TextLine import TextLine
 from ..Boxes.ButtonBox import ButtonBox
 from ..Back_End.Account import Account
+from ..Boxes.VWidget import VWidget
+from ..Back_End.Chat import Chat
 from .. import UiController
 
-class ChatPreview(ButtonBox):
-    def __init__(self, acc: Optional[Account], parent: QObject | None = None):
-        ButtonBox.__init__(self, parent)
+class ChatPreview(ButtonBox, VWidget):
+    def __init__(self, acc: Optional[Chat], parent: QWidget | None = None):
+        VWidget.__init__(self)
+        ButtonBox.__init__(self)
+        self.setParent(parent)
 
         self.setFixedHeight(54)
 
-        self.account = acc
+        self.chat = acc
 
         self.setAutoFillBackground(True)
 
@@ -29,9 +33,13 @@ class ChatPreview(ButtonBox):
         self.defColor: QColor = QColorConstants.White
         self.avatarBox = QWidget(self)
         self.infoBox = QWidget(self)
-        self.info = TextLine(self.account.name(), self)
-        self.subinfo = TextLine(self.account.name(), self)
-        self.avatar = Avatar(acc, self.avatarBox)
+        self.info = TextLine(self.chat.account.name(), self)
+        self.subinfo = TextLine(self.chat.lastMessage(), self)
+
+        pal = self.subinfo.palette()
+        pal.setColor(self.subinfo.foregroundRole(), UiController.SecondTextColor)
+        self.subinfo.setPalette(pal)
+        self.avatar = Avatar(self.chat.account, self.avatarBox)
 
         self.info.setFont(QFont(UiController.DefaultFontFamily, 10, QFont.Weight.Medium))
         self.info.setAlignment(Qt.AlignmentFlag.AlignVCenter)
@@ -64,9 +72,9 @@ class ChatPreview(ButtonBox):
         self.setPalette(pal)
 
     def enterEvent(self, event: QEnterEvent) -> None:
-        self.setBColor(QColorConstants.Gray)
+        self.setBColor(UiController.HoverBackgroundColor)
         self.update()
 
     def leaveEvent(self, event: QEvent) -> None:
-        self.setBColor(self.defColor)
+        self.setBColor(QColorConstants.White)
         self.update()

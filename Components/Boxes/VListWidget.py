@@ -21,7 +21,6 @@ class VListWidget(VWidget):
         self.widgetList.append(widget)
         h = max(self.contentsMargins().top(), self.height() - self.contentsMargins().bottom())
 
-
         if len(self.spacing) != 0:
             h += self.spacing[-1]
         widget.move(self.contentsMargins().left(), h)
@@ -29,13 +28,12 @@ class VListWidget(VWidget):
         self.spacing.append(self.defaultSpacing)
         h += self.contentsMargins().bottom()
 
-        print(widget.height(), h)
         self.resize(self.width(), h)
 
     def insertWidget(self, index: int , widget: VWidget):
         widget.setParent(self)
         widget.resizeWidth(self.width() - self.contentsMargins().left() - self.contentsMargins().right())
-        self.widgetList.insert(0, widget)
+        self.widgetList.insert(index, widget)
         self.updateHeight()
 
     def clear(self):
@@ -70,6 +68,7 @@ class VListWidget(VWidget):
         h += self.contentsMargins().bottom()
 
         self.resize(w, h)
+
 
 
 

@@ -1,4 +1,5 @@
 from .Account import Account
+from .Chat import Chat
 
 class ApplicationInterface:
     def __init__(self):
@@ -10,7 +11,7 @@ class ApplicationInterface:
     def Accounts(self) -> list[Account]:
         pass
 
-    def Chats(self) -> list[Account]:
+    def Chats(self) -> list[Chat]:
         pass
 
     def resetCurrentAccount(self):
@@ -28,10 +29,10 @@ class ApplicationInterface:
     def removeAccount(self, acc: Account):
         pass
 
-    def addChat(self, acc: Account):
+    def addChat(self, acc: Chat):
         pass
 
-    def removeChat(self, acc: Account):
+    def removeChat(self, acc: Chat):
         pass
 
     def currentAccount(self) -> Account:
