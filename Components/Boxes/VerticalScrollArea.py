@@ -58,7 +58,6 @@ class VerticalScrollArea(QWidget):
         if self.widget is None:
             return
 
-
         if self.widget.y() > self.max:
             self.widget.move(0, self.max)
 

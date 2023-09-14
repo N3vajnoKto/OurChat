@@ -44,7 +44,7 @@ class InfoBoard(QWidget):
         self.setPalette(pal)
 
         self.info.setText(self.account.name())
-        self.subinfo.setText("conecting...")
+        self.subinfo.setText("connecting...")
         self.info.setMargin(1)
         self.subinfo.setMargin(1)
         font = QFont(UiController.DefaultFontFamily, 10, QFont.Weight.Medium)

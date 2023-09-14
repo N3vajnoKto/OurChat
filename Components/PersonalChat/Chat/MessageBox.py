@@ -24,6 +24,11 @@ class MessageBox(VWidget):
         self.messageFrame.setMessage(self.message)
         self.message.setMaximumWidth(self.maxWidth())
 
+        # self.setAutoFillBackground(True)
+        # pal = self.palette()
+        # pal.setColor(self.backgroundRole(), QColorConstants.Green)
+        # self.setPalette(pal)
+
         self.arrange()
 
     def arrange(self):

@@ -5,8 +5,8 @@ from PyQt6.QtGui import QImage, QColor
 
 class Account:
     def __init__(self):
-        self.__name = "Девушка Рядом С Кириллом"
-        self.__nickname = "DaryaGnedko"
+        self.__name = "Ивановский Иван"
+        self.__nickname = "IvanovD"
         self.__avatar: Optional[QImage] = None
         self.__backgroundColor: QColor = QColor.fromHsv(randint(0, 359), randint(200, 255), randint(220, 240))
 
